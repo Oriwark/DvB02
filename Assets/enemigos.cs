@@ -5,31 +5,36 @@ using System.Linq;
 
 public class enemigos : MonoBehaviour
 {
-    private float minX, maxX, minY, maxY;
-    [SerializeField] private Transform[] puntos;
-    [SerializeField] private GameObject[] enemys;
-    [SerializeField] private float tiempoEnemigos;
+    public GameObject prefabBacteria;
+    private float randomX;
+    private float randomY;
 
-    private float tiempoSiguenteEnemigo;
-    // Start is called before the first frame update
-    private void Start() {
-        maxX = puntos.Max(punto => punto.position.x);
-        minX = puntos.Min(punto => punto.position.x);
-        maxY = puntos.Max(punto => punto.position.y);
-        minY = puntos.Min(punto => punto.position.y);
+    
+    void Start()
+    {
+        StartCoroutine(oleadaBacterias());
     }
 
-    private void Update() {
-        tiempoSiguenteEnemigo += Time.deltaTime;
-        if (tiempoSiguenteEnemigo >= tiempoEnemigos) {
-            tiempoSiguenteEnemigo = 0;
-            CrearEnemigo();
+    // Update is called once per frame
+    void Update()
+    {
+
+    }
+    public void CrearBacteria()
+    {
+
+        randomX = Random.Range(-2.75f, 2.75f);
+        GameObject a = Instantiate(prefabBacteria) as GameObject;
+        a.transform.position = new Vector3(randomX, 5.72f, 0f);
+
+    }
+    IEnumerator oleadaBacterias()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(2f);
+            CrearBacteria();
         }
     }
-
-    private void CrearEnemigo() {
-        int numeroEnemigo = Random.Range(0, enemys. Length);
-        Vector2 posicionAleatoria = new Vector2(Random.Range(minX, maxX), Random.Range(minY, maxX));
-        Instantiate(enemys[numeroEnemigo], posicionAleatoria, Quaternion.identity);
-    }
 }
+
